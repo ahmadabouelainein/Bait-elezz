@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html[lang="ar"] body,
+html[lang="ar"] * {
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+}
+
+html[lang="en"] body,
+html[lang="en"] * {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+html[lang="ar"] .prose {
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+  line-height: 1.9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
