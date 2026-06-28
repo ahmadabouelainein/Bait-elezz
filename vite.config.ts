@@ -14,4 +14,8 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
   },
+  define: {
+    __GROQ_DEFAULT_KEY__: JSON.stringify(process.env.VITE_GROQ_API_KEY ?? ''),
+    __HAS_DEFAULT_KEY__: JSON.stringify(!!process.env.VITE_GROQ_API_KEY),
+  },
 })

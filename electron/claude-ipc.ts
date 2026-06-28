@@ -1,9 +1,13 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import Store from 'electron-store'
 import type { IpcMain } from 'electron'
 import { buildPrompt, buildSystemPrompt } from './prompt-builder'
+import { DEFAULT_GROQ_KEY } from './default-key'
 
 const store = new Store<{ apiKey: string }>({ encryptionKey: 'bait-elezz-v1' })
+
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
+const TEXT_MODEL = 'llama-3.3-70b-versatile'
+const VISION_MODEL = 'llama-3.2-11b-vision-preview'
 
 export function setupClaudeIPC(ipcMain: IpcMain) {
   ipcMain.handle('store:set-api-key', (_e, key: string) => {
@@ -26,31 +30,53 @@ export function setupClaudeIPC(ipcMain: IpcMain) {
         language: 'en' | 'ar'
       }
     ) => {
-      const apiKey = store.get('apiKey', '')
+      const apiKey = store.get('apiKey', '') || DEFAULT_GROQ_KEY
       if (!apiKey) throw new Error('API key not configured')
 
-      const genAI = new GoogleGenerativeAI(apiKey)
-      const model = genAI.getGenerativeModel({
-        model: 'gemini-2.0-flash',
-        systemInstruction: buildSystemPrompt(payload.language),
+      const model = payload.imageBase64 ? VISION_MODEL : TEXT_MODEL
+      const prompt = buildPrompt(payload.feature, payload.inputs, payload.language)
+      const system = buildSystemPrompt(payload.language)
+
+      const userContent = payload.imageBase64
+        ? [
+            { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${payload.imageBase64}` } },
+            { type: 'text', text: prompt },
+          ]
+        : prompt
+
+      const res = await fetch(GROQ_URL, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: userContent },
+          ],
+          temperature: 0.7,
+          max_tokens: 4096,
+        }),
       })
 
-      type Part =
-        | { text: string }
-        | { inlineData: { mimeType: string; data: string } }
-
-      const parts: Part[] = []
-
-      if (payload.imageBase64) {
-        parts.push({
-          inlineData: { mimeType: 'image/jpeg', data: payload.imageBase64 },
-        })
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as { error?: { message?: string } }
+        const msg = err.error?.message ?? `HTTP ${res.status}`
+        if (res.status === 401) {
+          throw new Error('Invalid API key. Go to Settings and enter a valid key from console.groq.com')
+        }
+        if (res.status === 429) {
+          throw new Error('Rate limit exceeded. Groq free tier allows 30 requests per minute. Please wait a moment and try again.')
+        }
+        throw new Error(`Groq error: ${msg}`)
       }
 
-      parts.push({ text: buildPrompt(payload.feature, payload.inputs, payload.language) })
-
-      const result = await model.generateContent(parts)
-      return result.response.text()
+      const data = (await res.json()) as {
+        choices?: Array<{ message?: { content?: string } }>
+      }
+      return data.choices?.[0]?.message?.content ?? ''
     }
   )
 }

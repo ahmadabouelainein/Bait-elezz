@@ -13,10 +13,12 @@ import {
   MoveHorizontal,
   Image,
   Settings,
+  Building2,
 } from 'lucide-react'
 
 const navItems = [
   { to: '/', key: 'home', icon: Home },
+  { to: '/room', key: 'room', icon: Building2 },
   { to: '/wall-colors', key: 'wallColors', icon: Paintbrush },
   { to: '/furniture-placement', key: 'furniturePlacement', icon: Sofa },
   { to: '/curtain-color', key: 'curtainColor', icon: Wind },

@@ -2,6 +2,10 @@
   "name": "bait-elezz",
   "version": "1.0.0",
   "description": "AI-powered interior design assistant / مساعد التصميم الداخلي",
+  "author": {
+    "name": "Ahmad Abouelainein",
+    "email": "ahmad.abouelainein@gmail.com"
+  },
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron dist-electron/main.js\"",
@@ -16,12 +20,13 @@
     "cap:sync": "npx cap sync"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.0",
     "@capacitor/android": "^7.4.0",
     "@capacitor/cli": "^7.4.0",
     "@capacitor/core": "^7.4.0",
     "@capacitor/preferences": "^7.0.1",
+    "clsx": "^2.1.1",
     "electron-store": "^8.2.0",
+    "electron-updater": "^6.8.9",
     "i18next": "^23.16.4",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
@@ -29,11 +34,11 @@
     "react-i18next": "^15.1.1",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.28.0",
-    "zustand": "^5.0.1",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.4",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^22.10.1",
     "@types/react": "^18.3.17",
     "@types/react-dom": "^18.3.5",
@@ -48,7 +53,6 @@
     "eslint": "^9.17.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "@tailwindcss/typography": "^0.5.15",
     "typescript": "^5.7.2",
     "vite": "^6.0.5",
     "wait-on": "^8.0.1"

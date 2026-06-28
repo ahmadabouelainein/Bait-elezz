@@ -1,6 +1,8 @@
 import { useAppStore } from '@/store/useAppStore'
 import { callClaudeMobile, hasApiKeyMobile } from './claude-mobile'
 
+declare const __HAS_DEFAULT_KEY__: boolean
+
 interface CallPayload {
   feature: string
   inputs: Record<string, unknown>
@@ -36,9 +38,8 @@ export function useClaudeCall() {
   }
 
   const checkApiKey = async (): Promise<boolean> => {
-    if (window.electronAPI) {
-      return hasApiKey
-    }
+    if (typeof __HAS_DEFAULT_KEY__ !== 'undefined' && __HAS_DEFAULT_KEY__) return true
+    if (window.electronAPI) return hasApiKey
     return hasApiKeyMobile()
   }
 

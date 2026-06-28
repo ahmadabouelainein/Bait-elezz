@@ -14,7 +14,21 @@
     "carpetSelection": "Carpet Selection",
     "runners": "Runners & Accessories",
     "tableaux": "Tableaux & Art",
-    "settings": "Settings"
+    "settings": "Settings",
+    "room": "My Room"
+  },
+  "room": {
+    "title": "My Room Project",
+    "description": "Design your complete room using any or all of the 9 design features. Skip whatever you don't need.",
+    "projectName": "Project Name",
+    "projectNamePlaceholder": "e.g. Master Bedroom, Living Room...",
+    "startProject": "Start Room Project",
+    "analyzed": "{{count}} / {{total}} sections analyzed",
+    "autoSaved": "auto-saved",
+    "export": "Export JSON",
+    "newRoom": "New Room",
+    "confirmNew": "Start a new room project? This will clear all current data.",
+    "clickToRename": "Click to rename"
   },
   "common": {
     "analyze": "Get AI Recommendation",
@@ -26,20 +40,22 @@
     "copy": "Copy",
     "copied": "Copied!",
     "error": "Something went wrong. Please try again.",
-    "apiKeyRequired": "Please add your Google Gemini API key in Settings first.",
+    "apiKeyRequired": "Please add your Groq API key in Settings first. Get a free key at console.groq.com",
     "dragOrClick": "Drag & drop or click to upload",
     "yes": "Yes",
     "no": "No"
   },
   "settings": {
     "title": "Settings",
-    "apiKey": "Google Gemini API Key",
-    "apiKeyPlaceholder": "AIza...",
+    "apiKey": "Groq API Key",
+    "apiKeyPlaceholder": "gsk_...",
     "save": "Save API Key",
     "saved": "Saved!",
     "getKeyAt": "Get your free API key at",
-    "apiKeyHint": "Your key is stored locally and never sent anywhere except Google's Gemini API.",
-    "change": "Change Key"
+    "apiKeyHint": "Your key is stored locally and never sent anywhere except Groq's API.",
+    "change": "Change Key",
+    "groqFreeTier": "Free tier: 30 requests/min · 14,400 requests/day",
+    "groqFreeTierDetail": "No credit card required. Sign up at console.groq.com in seconds."
   },
   "home": {
     "welcome": "Welcome to Bait-elezz",
@@ -109,7 +125,11 @@
     "colorDistributionPlaceholder": "e.g. Dark walnut 60%, Light oak 40%",
     "plankWidth": "Plank Width (cm)",
     "plankLength": "Plank Length (cm)",
-    "woodDensity": "Wood Density (kg/m³, optional)"
+    "woodDensity": "Wood Density (kg/m³, optional)",
+    "verifying": "Verifying calculations...",
+    "verified": "Calculations Verified",
+    "verificationIssues": "Verification Found Issues",
+    "verificationResult": "Verification"
   },
   "upholsteryFabric": {
     "description": "Find the best upholstery fabric color and material.",

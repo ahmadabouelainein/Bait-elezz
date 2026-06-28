@@ -4,6 +4,7 @@ export type FeatureKey =
   | 'curtainColor'
   | 'furnitureDimensions'
   | 'woodPlanks'
+  | 'woodPlanksVerify'
   | 'upholsteryFabric'
   | 'carpetSelection'
   | 'runners'
@@ -184,6 +185,43 @@ Suggest:
 3. Frame styles with HEX color codes (color, material, depth)
 4. Optimal hanging height (eye-level rule: 145-152cm center)
 5. Picture lighting options (track spots, hidden LED strip)`
+
+    case 'woodPlanksVerify':
+      return ar
+        ? `الرد السابق للذكاء الاصطناعي عن حساب ألواح الخشب:
+---
+${inputs.aiResponse}
+---
+
+المدخلات الأصلية:
+- المساحة الكلية: ${inputs.totalArea} م²
+- توزيع الألوان: ${inputs.colorDistribution}
+- مقاس اللوح: ${inputs.plankWidth}سم عرض × ${inputs.plankLength}سم طول
+- كثافة الخشب: ${inputs.woodDensity} كغ/م³
+
+تحقق رياضياً من الحسابات:
+1. هل عدد الألواح صحيح لكل لون؟ (المساحة × النسبة ÷ مساحة اللوح الواحد، ثم أضف 10% هدر)
+2. هل مجموع النسب المئوية يساوي 100%؟
+3. هل حسابات الوزن دقيقة؟ (الحجم × الكثافة)
+
+ابدأ ردك بـ "✓ صحيح" إذا كانت جميع الحسابات سليمة، أو "⚠ يوجد أخطاء" إذا وجدت مشكلات. ثم اشرح النتيجة باختصار.`
+        : `Previous AI response for wood plank calculation:
+---
+${inputs.aiResponse}
+---
+
+Original inputs:
+- Total floor area: ${inputs.totalArea} m²
+- Color distribution: ${inputs.colorDistribution}
+- Plank size: ${inputs.plankWidth}cm wide × ${inputs.plankLength}cm long
+- Wood density: ${inputs.woodDensity} kg/m³
+
+Verify the mathematics:
+1. Are plank counts correct per color? (area × percentage ÷ plank area, then +10% waste)
+2. Do the color percentages sum to 100%?
+3. Are weight calculations accurate? (volume × density)
+
+Start your response with exactly "✓ VERIFIED" if all calculations are correct, or "⚠ ISSUES FOUND" if errors are present. Then briefly explain your findings.`
 
     default:
       return ar
