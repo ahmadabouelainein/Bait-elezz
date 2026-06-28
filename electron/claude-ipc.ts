@@ -60,6 +60,9 @@ export function setupClaudeIPC(ipcMain: IpcMain) {
         if (msg.includes('PERMISSION_DENIED') || msg.includes('blocked')) {
           throw new Error('API key is restricted. Remove any "Android apps" restriction from your key in Google Cloud Console, or use an unrestricted key.')
         }
+        if (msg.includes('RESOURCE_EXHAUSTED') || msg.includes('quota') || msg.includes('429')) {
+          throw new Error('Rate limit exceeded. The free tier allows 15 requests per minute. Please wait a moment and try again.')
+        }
         throw err
       }
     }

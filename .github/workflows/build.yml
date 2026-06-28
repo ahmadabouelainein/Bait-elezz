@@ -22,13 +22,13 @@ jobs:
             artifact_name: bait-elezz-windows
             artifact_glob: release/**/*.exe
           - os: macos-latest
-            name: macos
+            name: mac
             artifact_name: bait-elezz-macos
             artifact_glob: release/**/*.dmg
           - os: ubuntu-latest
             name: linux
             artifact_name: bait-elezz-linux
-            artifact_glob: release/**/*.AppImage
+            artifact_glob: release/**/*.{AppImage,deb}
 
     steps:
       - uses: actions/checkout@v4
@@ -47,8 +47,8 @@ jobs:
       - name: Build Vite (React)
         run: npx vite build
 
-      - name: Package with electron-builder
-        run: npx electron-builder --${{ matrix.name }}
+      - name: Package — publish on tag, skip otherwise
+        run: npx electron-builder --${{ matrix.name }} --publish ${{ startsWith(github.ref, 'refs/tags/') && 'always' || 'never' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -60,11 +60,9 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-  # ── Android APK (Android 15+, API 35) ────────────────────────────────────
-  # The android/ directory is committed to the repo (Capacitor standard practice).
-  # minSdkVersion = 35 is set in android/variables.gradle.
+  # ── Android APK ───────────────────────────────────────────────────────────
   android:
-    name: Android APK (API 35)
+    name: Android APK
     runs-on: ubuntu-latest
 
     steps:
@@ -96,21 +94,40 @@ jobs:
       - name: Accept Android SDK licenses
         run: yes | sdkmanager --licenses || true
 
-      - name: Install Android platform 35 and build tools
+      - name: Install Android platform and build tools
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0" "platform-tools"
 
       - name: Write local.properties
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
 
-      - name: Build debug APK
+      # If signing secrets are present, set up a signed release build
+      - name: Set up release signing
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
+          cat > android/app/keystore.properties <<EOF
+          storeFile=release.keystore
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          EOF
+
+      - name: Build APK (release if signed, debug otherwise)
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon
+        run: |
+          if [ -f app/keystore.properties ]; then
+            ./gradlew assembleRelease --no-daemon
+            echo "APK_PATH=app/build/outputs/apk/release/*.apk" >> $GITHUB_ENV
+          else
+            ./gradlew assembleDebug --no-daemon
+            echo "APK_PATH=app/build/outputs/apk/debug/*.apk" >> $GITHUB_ENV
+          fi
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: bait-elezz-android
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: android/${{ env.APK_PATH }}
           if-no-files-found: warn
           retention-days: 30
 

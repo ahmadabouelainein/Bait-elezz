@@ -70,6 +70,9 @@ export async function callClaudeMobile(payload: {
     if (response.status === 403 || errObj?.status === 'PERMISSION_DENIED') {
       throw new Error('API key is restricted. If you set an "Android apps" restriction on your key, remove it — the desktop app cannot pass Android credentials. Use an unrestricted key or create a separate one.')
     }
+    if (response.status === 429 || errObj?.status === 'RESOURCE_EXHAUSTED') {
+      throw new Error('Rate limit exceeded. The free tier allows 15 requests per minute. Please wait a moment and try again.')
+    }
     throw new Error(errObj?.message ?? `HTTP ${response.status}`)
   }
 
