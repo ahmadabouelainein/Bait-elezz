@@ -1,4 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 import Store from 'electron-store'
 import type { IpcMain } from 'electron'
 import { buildPrompt, buildSystemPrompt } from './prompt-builder'
@@ -29,35 +29,28 @@ export function setupClaudeIPC(ipcMain: IpcMain) {
       const apiKey = store.get('apiKey', '')
       if (!apiKey) throw new Error('API key not configured')
 
-      const client = new Anthropic({ apiKey })
+      const genAI = new GoogleGenerativeAI(apiKey)
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-2.0-flash',
+        systemInstruction: buildSystemPrompt(payload.language),
+      })
 
-      const userContent: Anthropic.ContentBlockParam[] = []
+      type Part =
+        | { text: string }
+        | { inlineData: { mimeType: string; data: string } }
+
+      const parts: Part[] = []
 
       if (payload.imageBase64) {
-        userContent.push({
-          type: 'image',
-          source: {
-            type: 'base64',
-            media_type: 'image/jpeg',
-            data: payload.imageBase64,
-          },
+        parts.push({
+          inlineData: { mimeType: 'image/jpeg', data: payload.imageBase64 },
         })
       }
 
-      userContent.push({
-        type: 'text',
-        text: buildPrompt(payload.feature, payload.inputs, payload.language),
-      })
+      parts.push({ text: buildPrompt(payload.feature, payload.inputs, payload.language) })
 
-      const response = await client.messages.create({
-        model: 'claude-opus-4-8',
-        max_tokens: 4096,
-        system: buildSystemPrompt(payload.language),
-        messages: [{ role: 'user', content: userContent }],
-      })
-
-      const textBlock = response.content.find((b) => b.type === 'text')
-      return textBlock?.type === 'text' ? textBlock.text : ''
+      const result = await model.generateContent(parts)
+      return result.response.text()
     }
   )
 }

@@ -1,9 +1,12 @@
 import { buildPrompt, buildSystemPrompt } from '../../electron/prompt-builder'
 
+const GEMINI_MODEL = 'gemini-2.0-flash'
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`
+
 async function getStoredApiKey(): Promise<string> {
   try {
     const { Preferences } = await import('@capacitor/preferences')
-    const { value } = await Preferences.get({ key: 'anthropic_api_key' })
+    const { value } = await Preferences.get({ key: 'gemini_api_key' })
     return value ?? ''
   } catch {
     return ''
@@ -13,7 +16,7 @@ async function getStoredApiKey(): Promise<string> {
 export async function saveApiKeyMobile(key: string): Promise<boolean> {
   try {
     const { Preferences } = await import('@capacitor/preferences')
-    await Preferences.set({ key: 'anthropic_api_key', value: key })
+    await Preferences.set({ key: 'gemini_api_key', value: key })
     return true
   } catch {
     return false
@@ -34,47 +37,38 @@ export async function callClaudeMobile(payload: {
   const apiKey = await getStoredApiKey()
   if (!apiKey) throw new Error('API key not configured')
 
-  const userContent: Array<{ type: string; [key: string]: unknown }> = []
+  type Part =
+    | { text: string }
+    | { inline_data: { mime_type: string; data: string } }
+
+  const parts: Part[] = []
 
   if (payload.imageBase64) {
-    userContent.push({
-      type: 'image',
-      source: {
-        type: 'base64',
-        media_type: 'image/jpeg',
-        data: payload.imageBase64,
-      },
+    parts.push({
+      inline_data: { mime_type: 'image/jpeg', data: payload.imageBase64 },
     })
   }
 
-  userContent.push({
-    type: 'text',
-    text: buildPrompt(payload.feature, payload.inputs, payload.language),
-  })
+  parts.push({ text: buildPrompt(payload.feature, payload.inputs, payload.language) })
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
     method: 'POST',
-    headers: {
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
+    headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-opus-4-8',
-      max_tokens: 4096,
-      system: buildSystemPrompt(payload.language),
-      messages: [{ role: 'user', content: userContent }],
+      system_instruction: { parts: [{ text: buildSystemPrompt(payload.language) }] },
+      contents: [{ role: 'user', parts }],
+      generationConfig: { maxOutputTokens: 4096 },
     }),
   })
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({}))
-    throw new Error((err as { error?: { message?: string } }).error?.message ?? `HTTP ${response.status}`)
+    const msg = (err as { error?: { message?: string } }).error?.message
+    throw new Error(msg ?? `HTTP ${response.status}`)
   }
 
   const data = (await response.json()) as {
-    content: Array<{ type: string; text?: string }>
+    candidates: Array<{ content: { parts: Array<{ text?: string }> } }>
   }
-  const textBlock = data.content.find((b) => b.type === 'text')
-  return textBlock?.text ?? ''
+  return data.candidates[0]?.content?.parts?.[0]?.text ?? ''
 }

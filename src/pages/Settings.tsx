@@ -28,10 +28,6 @@ export default function Settings() {
 
   const handleSave = async () => {
     if (!apiKey || masked) return
-    if (!apiKey.startsWith('sk-ant-')) {
-      setError('Invalid API key format. It should start with "sk-ant-"')
-      return
-    }
     setError('')
     try {
       if (window.electronAPI) {
@@ -98,7 +94,7 @@ export default function Settings() {
         <div className="flex items-center gap-1 text-xs text-gray-400">
           <ExternalLink size={11} />
           <span>{t('settings.getKeyAt')}</span>
-          <span className="text-primary-600 font-mono">console.anthropic.com</span>
+          <span className="text-primary-600 font-mono">aistudio.google.com</span>
         </div>
 
         {error && (
