@@ -1,16 +1,51 @@
-name: Build & CI
+name: Release
 
 on:
-  push:
-    branches: [main, 'claude/**']
-  pull_request:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version component to bump'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 jobs:
-  # ── Desktop Builds (Windows / macOS / Linux) ──────────────────────────────
+  # ── 1. Compute next semver ───────────────────────────────────────────────
+  version:
+    name: Compute version
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.semver.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute next semver
+        id: semver
+        run: |
+          git fetch --tags
+          latest=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          [ -z "$latest" ] && latest="v0.0.0"
+          ver=${latest#v}
+          IFS='.' read -r maj min pat <<< "$ver"
+          case "${{ inputs.bump }}" in
+            major) maj=$((maj+1)); min=0; pat=0 ;;
+            minor) min=$((min+1)); pat=0 ;;
+            patch) pat=$((pat+1)) ;;
+          esac
+          tag="v${maj}.${min}.${pat}"
+          echo "Bumping $latest → $tag"
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+
+  # ── 2. Desktop Builds (Windows / macOS / Linux) ─────────────────────────
   desktop:
     name: Desktop (${{ matrix.name }})
+    needs: version
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -70,11 +105,12 @@ jobs:
           name: ${{ matrix.artifact_name }}
           path: ${{ matrix.artifact_glob }}
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 1
 
-  # ── Android APK ───────────────────────────────────────────────────────────
+  # ── 3. Android APK ──────────────────────────────────────────────────────
   android:
     name: Android APK
+    needs: version
     runs-on: ubuntu-latest
 
     steps:
@@ -93,7 +129,7 @@ jobs:
         env:
           VITE_GROQ_API_KEY: ${{ secrets.GROK_API_TOKEN }}
 
-      - name: Sync Capacitor (copy web assets into Android project)
+      - name: Sync Capacitor
         run: npx cap sync android
 
       - name: Set up Java 21
@@ -144,4 +180,34 @@ jobs:
           name: bait-elezz-android
           path: android/${{ env.APK_PATH }}
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 1
+
+  # ── 4. Create GitHub Release ────────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    needs: [version, desktop, android]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: List downloaded files
+        run: find artifacts -type f | sort
+
+      - name: Create GitHub Release ${{ needs.version.outputs.tag }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.version.outputs.tag }}
+          name: ${{ needs.version.outputs.tag }}
+          files: artifacts/**/*
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
