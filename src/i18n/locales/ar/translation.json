@@ -26,19 +26,19 @@
     "copy": "نسخ",
     "copied": "تم النسخ!",
     "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
-    "apiKeyRequired": "يرجى إضافة مفتاح Anthropic API في الإعدادات أولاً.",
+    "apiKeyRequired": "يرجى إضافة مفتاح Google Gemini API في الإعدادات أولاً.",
     "dragOrClick": "اسحب وأفلت أو انقر للرفع",
     "yes": "نعم",
     "no": "لا"
   },
   "settings": {
     "title": "الإعدادات",
-    "apiKey": "مفتاح Anthropic API",
-    "apiKeyPlaceholder": "sk-ant-api03-...",
+    "apiKey": "مفتاح Google Gemini API",
+    "apiKeyPlaceholder": "AIza...",
     "save": "حفظ المفتاح",
     "saved": "تم الحفظ!",
-    "getKeyAt": "احصل على مفتاحك من",
-    "apiKeyHint": "يُحفظ مفتاحك محلياً ولا يُرسل إلا إلى API الخاصة بـ Anthropic.",
+    "getKeyAt": "احصل على مفتاحك المجاني من",
+    "apiKeyHint": "يُحفظ مفتاحك محلياً ولا يُرسل إلا إلى API الخاصة بـ Google Gemini.",
     "change": "تغيير المفتاح"
   },
   "home": {

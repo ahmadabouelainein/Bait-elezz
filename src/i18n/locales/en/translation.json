@@ -26,19 +26,19 @@
     "copy": "Copy",
     "copied": "Copied!",
     "error": "Something went wrong. Please try again.",
-    "apiKeyRequired": "Please add your Anthropic API key in Settings first.",
+    "apiKeyRequired": "Please add your Google Gemini API key in Settings first.",
     "dragOrClick": "Drag & drop or click to upload",
     "yes": "Yes",
     "no": "No"
   },
   "settings": {
     "title": "Settings",
-    "apiKey": "Anthropic API Key",
-    "apiKeyPlaceholder": "sk-ant-api03-...",
+    "apiKey": "Google Gemini API Key",
+    "apiKeyPlaceholder": "AIza...",
     "save": "Save API Key",
     "saved": "Saved!",
-    "getKeyAt": "Get your API key at",
-    "apiKeyHint": "Your key is stored locally and never sent anywhere except Anthropic's API.",
+    "getKeyAt": "Get your free API key at",
+    "apiKeyHint": "Your key is stored locally and never sent anywhere except Google's Gemini API.",
     "change": "Change Key"
   },
   "home": {
