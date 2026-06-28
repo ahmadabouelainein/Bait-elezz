@@ -4,6 +4,7 @@ export type FeatureKey =
   | 'curtainColor'
   | 'furnitureDimensions'
   | 'woodPlanks'
+  | 'woodPlanksVerify'
   | 'upholsteryFabric'
   | 'carpetSelection'
   | 'runners'

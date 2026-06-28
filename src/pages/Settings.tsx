@@ -94,7 +94,12 @@ export default function Settings() {
         <div className="flex items-center gap-1 text-xs text-gray-400">
           <ExternalLink size={11} />
           <span>{t('settings.getKeyAt')}</span>
-          <span className="text-primary-600 font-mono">aistudio.google.com</span>
+          <span className="text-primary-600 font-mono">console.groq.com</span>
+        </div>
+
+        <div className="bg-orange-50 border border-orange-100 rounded-lg px-3 py-2.5 text-xs text-orange-700 space-y-1">
+          <p className="font-medium">{t('settings.groqFreeTier')}</p>
+          <p>{t('settings.groqFreeTierDetail')}</p>
         </div>
 
         {error && (

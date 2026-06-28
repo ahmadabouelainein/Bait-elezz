@@ -16,6 +16,7 @@ import {
   Plus,
   CheckCircle2,
   Building2,
+  type LucideIcon,
 } from 'lucide-react'
 import { useRoomStore } from '@/store/useRoomStore'
 import { useAppStore } from '@/store/useAppStore'
@@ -26,7 +27,7 @@ import AIResponseCard from '@/components/AIResponseCard'
 
 type SectionDef = {
   key: FeatureKey
-  icon: React.ComponentType<{ size?: number; className?: string }>
+  icon: LucideIcon
 }
 
 const SECTIONS: SectionDef[] = [

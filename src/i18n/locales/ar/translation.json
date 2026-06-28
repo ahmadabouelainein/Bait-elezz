@@ -40,20 +40,22 @@
     "copy": "نسخ",
     "copied": "تم النسخ!",
     "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
-    "apiKeyRequired": "يرجى إضافة مفتاح Google Gemini API في الإعدادات أولاً.",
+    "apiKeyRequired": "يرجى إضافة مفتاح Groq API في الإعدادات أولاً. احصل على مفتاح مجاني من console.groq.com",
     "dragOrClick": "اسحب وأفلت أو انقر للرفع",
     "yes": "نعم",
     "no": "لا"
   },
   "settings": {
     "title": "الإعدادات",
-    "apiKey": "مفتاح Google Gemini API",
-    "apiKeyPlaceholder": "AIza...",
+    "apiKey": "مفتاح Groq API",
+    "apiKeyPlaceholder": "gsk_...",
     "save": "حفظ المفتاح",
     "saved": "تم الحفظ!",
     "getKeyAt": "احصل على مفتاحك المجاني من",
-    "apiKeyHint": "يُحفظ مفتاحك محلياً ولا يُرسل إلا إلى API الخاصة بـ Google Gemini.",
-    "change": "تغيير المفتاح"
+    "apiKeyHint": "يُحفظ مفتاحك محلياً ولا يُرسل إلا إلى API الخاصة بـ Groq.",
+    "change": "تغيير المفتاح",
+    "groqFreeTier": "الخطة المجانية: 30 طلب/دقيقة · 14,400 طلب/يوم",
+    "groqFreeTierDetail": "لا حاجة لبطاقة ائتمان. سجّل في console.groq.com في ثوانٍ."
   },
   "home": {
     "welcome": "أهلاً بك في بيت العزّ",
