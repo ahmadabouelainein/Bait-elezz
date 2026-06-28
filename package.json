@@ -2,6 +2,10 @@
   "name": "bait-elezz",
   "version": "1.0.0",
   "description": "AI-powered interior design assistant / مساعد التصميم الداخلي",
+  "author": {
+    "name": "Ahmad Abouelainein",
+    "email": "ahmad.abouelainein@gmail.com"
+  },
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron dist-electron/main.js\"",
