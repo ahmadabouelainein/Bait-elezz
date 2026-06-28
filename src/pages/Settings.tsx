@@ -28,10 +28,6 @@ export default function Settings() {
 
   const handleSave = async () => {
     if (!apiKey || masked) return
-    if (!apiKey.startsWith('AIza')) {
-      setError('Invalid API key format. Google AI keys start with "AIza".')
-      return
-    }
     setError('')
     try {
       if (window.electronAPI) {
