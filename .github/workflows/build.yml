@@ -42,8 +42,13 @@ jobs:
         run: npm ci
 
       - name: Inject default Groq API key
+        shell: bash
         run: |
-          node -e "const fs=require('fs'); fs.writeFileSync('electron/default-key.ts', \`export const DEFAULT_GROQ_KEY = \${JSON.stringify(process.env.GROK_TOKEN || '')}\n\`);"
+          node -e "
+            var fs = require('fs');
+            var key = process.env.GROK_TOKEN || '';
+            fs.writeFileSync('electron/default-key.ts', 'export const DEFAULT_GROQ_KEY = ' + JSON.stringify(key) + '\n');
+          "
         env:
           GROK_TOKEN: ${{ secrets.GROK_API_TOKEN }}
 
