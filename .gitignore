@@ -2,7 +2,7 @@ node_modules/
 dist/
 dist-electron/
 release/
-android/
+# android/ — committed to repo (Capacitor standard practice)
 .DS_Store
 *.local
 .env
