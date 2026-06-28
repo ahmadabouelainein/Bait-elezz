@@ -49,8 +49,19 @@ export function setupClaudeIPC(ipcMain: IpcMain) {
 
       parts.push({ text: buildPrompt(payload.feature, payload.inputs, payload.language) })
 
-      const result = await model.generateContent(parts)
-      return result.response.text()
+      try {
+        const result = await model.generateContent(parts)
+        return result.response.text()
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err)
+        if (msg.includes('API_KEY_INVALID') || msg.includes('invalid authentication') || msg.includes('UNAUTHENTICATED')) {
+          throw new Error('Invalid API key. Go to Settings and enter a valid key from aistudio.google.com. Make sure it has no Android-app restrictions.')
+        }
+        if (msg.includes('PERMISSION_DENIED') || msg.includes('blocked')) {
+          throw new Error('API key is restricted. Remove any "Android apps" restriction from your key in Google Cloud Console, or use an unrestricted key.')
+        }
+        throw err
+      }
     }
   )
 }

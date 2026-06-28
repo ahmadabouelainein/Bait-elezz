@@ -14,7 +14,21 @@
     "carpetSelection": "Carpet Selection",
     "runners": "Runners & Accessories",
     "tableaux": "Tableaux & Art",
-    "settings": "Settings"
+    "settings": "Settings",
+    "room": "My Room"
+  },
+  "room": {
+    "title": "My Room Project",
+    "description": "Design your complete room using any or all of the 9 design features. Skip whatever you don't need.",
+    "projectName": "Project Name",
+    "projectNamePlaceholder": "e.g. Master Bedroom, Living Room...",
+    "startProject": "Start Room Project",
+    "analyzed": "{{count}} / {{total}} sections analyzed",
+    "autoSaved": "auto-saved",
+    "export": "Export JSON",
+    "newRoom": "New Room",
+    "confirmNew": "Start a new room project? This will clear all current data.",
+    "clickToRename": "Click to rename"
   },
   "common": {
     "analyze": "Get AI Recommendation",
@@ -109,7 +123,11 @@
     "colorDistributionPlaceholder": "e.g. Dark walnut 60%, Light oak 40%",
     "plankWidth": "Plank Width (cm)",
     "plankLength": "Plank Length (cm)",
-    "woodDensity": "Wood Density (kg/m³, optional)"
+    "woodDensity": "Wood Density (kg/m³, optional)",
+    "verifying": "Verifying calculations...",
+    "verified": "Calculations Verified",
+    "verificationIssues": "Verification Found Issues",
+    "verificationResult": "Verification"
   },
   "upholsteryFabric": {
     "description": "Find the best upholstery fabric color and material.",

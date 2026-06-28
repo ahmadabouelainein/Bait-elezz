@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import ReactMarkdown from 'react-markdown'
 import { useAppStore } from '@/store/useAppStore'
 import { useClaudeCall } from '@/lib/useClaudeCall'
 import FeaturePage from '@/components/FeaturePage'
@@ -17,13 +18,37 @@ export default function WoodPlanks() {
   const [response, setResponse] = useState('')
   const [error, setError] = useState('')
 
+  const [verifying, setVerifying] = useState(false)
+  const [verificationText, setVerificationText] = useState('')
+  const [verificationStatus, setVerificationStatus] = useState<'ok' | 'issues' | null>(null)
+
   const analyze = async () => {
     if (!hasApiKey) { setError(t('common.apiKeyRequired')); return }
     if (!totalArea || !colorDistribution) { setError('Please fill in all required fields'); return }
     setError('')
+    setVerificationText('')
+    setVerificationStatus(null)
+
     try {
-      const result = await call('woodPlanks', { totalArea, colorDistribution, plankWidth, plankLength, woodDensity: woodDensity || '700' })
+      const density = woodDensity || '700'
+      const result = await call('woodPlanks', {
+        totalArea, colorDistribution, plankWidth, plankLength, woodDensity: density,
+      })
       setResponse(result)
+
+      setVerifying(true)
+      try {
+        const vResult = await call('woodPlanksVerify', {
+          totalArea, colorDistribution, plankWidth, plankLength, woodDensity: density,
+          aiResponse: result,
+        })
+        setVerificationText(vResult)
+        setVerificationStatus(vResult.trimStart().startsWith('✓') ? 'ok' : 'issues')
+      } catch {
+        // verification is best-effort; don't surface its errors
+      } finally {
+        setVerifying(false)
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : t('common.error'))
     }
@@ -74,6 +99,34 @@ export default function WoodPlanks() {
         </label>
         <input type="number" value={woodDensity} onChange={(e) => setWoodDensity(e.target.value)} className={inputCls} placeholder="700" min="300" max="1200" />
       </div>
+
+      {verifying && (
+        <div className="flex items-center gap-2 text-sm text-gray-500 pt-1">
+          <div className="h-3.5 w-3.5 border-2 border-primary-400 border-t-transparent rounded-full animate-spin" />
+          {t('woodPlanks.verifying')}
+        </div>
+      )}
+
+      {verificationStatus && (
+        <div
+          className={`rounded-xl border px-4 py-3 space-y-2 ${
+            verificationStatus === 'ok'
+              ? 'border-green-200 bg-green-50'
+              : 'border-amber-200 bg-amber-50'
+          }`}
+        >
+          <p
+            className={`text-sm font-semibold ${
+              verificationStatus === 'ok' ? 'text-green-700' : 'text-amber-700'
+            }`}
+          >
+            {verificationStatus === 'ok' ? t('woodPlanks.verified') : t('woodPlanks.verificationIssues')}
+          </p>
+          <div className="text-xs text-gray-600 prose prose-xs max-w-none">
+            <ReactMarkdown>{verificationText}</ReactMarkdown>
+          </div>
+        </div>
+      )}
     </FeaturePage>
   )
 }

@@ -63,8 +63,14 @@ export async function callClaudeMobile(payload: {
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({}))
-    const msg = (err as { error?: { message?: string } }).error?.message
-    throw new Error(msg ?? `HTTP ${response.status}`)
+    const errObj = (err as { error?: { message?: string; status?: string } }).error
+    if (response.status === 401 || errObj?.status === 'UNAUTHENTICATED') {
+      throw new Error('Invalid API key. Go to Settings and enter a valid Gemini API key from aistudio.google.com. Make sure the key has no Android-app restrictions.')
+    }
+    if (response.status === 403 || errObj?.status === 'PERMISSION_DENIED') {
+      throw new Error('API key is restricted. If you set an "Android apps" restriction on your key, remove it — the desktop app cannot pass Android credentials. Use an unrestricted key or create a separate one.')
+    }
+    throw new Error(errObj?.message ?? `HTTP ${response.status}`)
   }
 
   const data = (await response.json()) as {

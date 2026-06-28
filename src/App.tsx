@@ -14,6 +14,7 @@ import CarpetSelection from '@/pages/CarpetSelection'
 import Runners from '@/pages/Runners'
 import Tableaux from '@/pages/Tableaux'
 import Settings from '@/pages/Settings'
+import Room from '@/pages/Room'
 
 export default function App() {
   const { i18n } = useTranslation()
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="carpet-selection" element={<CarpetSelection />} />
           <Route path="runners" element={<Runners />} />
           <Route path="tableaux" element={<Tableaux />} />
+          <Route path="room" element={<Room />} />
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>

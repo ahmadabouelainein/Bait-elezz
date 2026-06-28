@@ -14,7 +14,21 @@
     "carpetSelection": "السجاد",
     "runners": "الرانرز والإكسسوارات",
     "tableaux": "التابلوهات والفن",
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "room": "غرفتي"
+  },
+  "room": {
+    "title": "مشروع غرفتي",
+    "description": "صمّم غرفتك كاملةً باستخدام أي من الميزات التسع أو جميعها. تجاوز ما لا تحتاجه.",
+    "projectName": "اسم المشروع",
+    "projectNamePlaceholder": "مثال: غرفة النوم الرئيسية، غرفة المعيشة...",
+    "startProject": "ابدأ مشروع الغرفة",
+    "analyzed": "{{count}} / {{total}} أقسام محللة",
+    "autoSaved": "يُحفظ تلقائياً",
+    "export": "تصدير JSON",
+    "newRoom": "غرفة جديدة",
+    "confirmNew": "هل تريد بدء مشروع غرفة جديد؟ سيؤدي هذا إلى مسح جميع البيانات الحالية.",
+    "clickToRename": "انقر للتسمية"
   },
   "common": {
     "analyze": "احصل على توصية الذكاء الاصطناعي",
@@ -109,7 +123,11 @@
     "colorDistributionPlaceholder": "مثال: جوز داكن 60%، بلوط فاتح 40%",
     "plankWidth": "عرض اللوح (سم)",
     "plankLength": "طول اللوح (سم)",
-    "woodDensity": "كثافة الخشب (كغ/م³، اختياري)"
+    "woodDensity": "كثافة الخشب (كغ/م³، اختياري)",
+    "verifying": "جارٍ التحقق من الحسابات...",
+    "verified": "تم التحقق من الحسابات ✓",
+    "verificationIssues": "التحقق أظهر مشكلات",
+    "verificationResult": "نتيجة التحقق"
   },
   "upholsteryFabric": {
     "description": "اختر أنسب قماش وخامة لتنجيد أثاثك.",
