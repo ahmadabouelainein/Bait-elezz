@@ -1,5 +1,7 @@
 import { buildPrompt, buildSystemPrompt } from '../../electron/prompt-builder'
 
+declare const __GROQ_DEFAULT_KEY__: string
+
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
 const TEXT_MODEL = 'llama-3.3-70b-versatile'
 const VISION_MODEL = 'llama-3.2-11b-vision-preview'
@@ -12,6 +14,12 @@ async function getStoredApiKey(): Promise<string> {
   } catch {
     return ''
   }
+}
+
+async function getEffectiveApiKey(): Promise<string> {
+  const stored = await getStoredApiKey()
+  if (stored) return stored
+  return typeof __GROQ_DEFAULT_KEY__ !== 'undefined' ? __GROQ_DEFAULT_KEY__ : ''
 }
 
 export async function saveApiKeyMobile(key: string): Promise<boolean> {
@@ -35,7 +43,7 @@ export async function callClaudeMobile(payload: {
   imageBase64?: string
   language: 'en' | 'ar'
 }): Promise<string> {
-  const apiKey = await getStoredApiKey()
+  const apiKey = await getEffectiveApiKey()
   if (!apiKey) throw new Error('API key not configured')
 
   const model = payload.imageBase64 ? VISION_MODEL : TEXT_MODEL

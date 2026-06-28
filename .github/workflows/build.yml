@@ -41,11 +41,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Inject default Groq API key
+        run: |
+          node -e "const fs=require('fs'); fs.writeFileSync('electron/default-key.ts', \`export const DEFAULT_GROQ_KEY = \${JSON.stringify(process.env.GROK_TOKEN || '')}\n\`);"
+        env:
+          GROK_TOKEN: ${{ secrets.GROK_API_TOKEN }}
+
       - name: Build Electron (TypeScript)
         run: npx tsc --project tsconfig.electron.json
 
       - name: Build Vite (React)
         run: npx vite build
+        env:
+          VITE_GROQ_API_KEY: ${{ secrets.GROK_API_TOKEN }}
 
       - name: Package — publish on tag, skip otherwise
         run: npx electron-builder --${{ matrix.name }} --publish ${{ startsWith(github.ref, 'refs/tags/') && 'always' || 'never' }}
@@ -78,6 +86,8 @@ jobs:
 
       - name: Build Vite (web assets)
         run: npx vite build
+        env:
+          VITE_GROQ_API_KEY: ${{ secrets.GROK_API_TOKEN }}
 
       - name: Sync Capacitor (copy web assets into Android project)
         run: npx cap sync android

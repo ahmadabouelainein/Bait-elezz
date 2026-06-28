@@ -1,6 +1,7 @@
 import Store from 'electron-store'
 import type { IpcMain } from 'electron'
 import { buildPrompt, buildSystemPrompt } from './prompt-builder'
+import { DEFAULT_GROQ_KEY } from './default-key'
 
 const store = new Store<{ apiKey: string }>({ encryptionKey: 'bait-elezz-v1' })
 
@@ -29,7 +30,7 @@ export function setupClaudeIPC(ipcMain: IpcMain) {
         language: 'en' | 'ar'
       }
     ) => {
-      const apiKey = store.get('apiKey', '')
+      const apiKey = store.get('apiKey', '') || DEFAULT_GROQ_KEY
       if (!apiKey) throw new Error('API key not configured')
 
       const model = payload.imageBase64 ? VISION_MODEL : TEXT_MODEL
