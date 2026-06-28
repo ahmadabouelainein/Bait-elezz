@@ -1,0 +1,33 @@
+{
+  "appId": "com.baitelezz.desktop",
+  "productName": "Bait-elezz",
+  "copyright": "Copyright © 2026 Ahmad Abouelainein",
+  "directories": {
+    "output": "release/${version}"
+  },
+  "files": [
+    "dist/**",
+    "dist-electron/**",
+    "!node_modules/**"
+  ],
+  "win": {
+    "target": [{ "target": "nsis", "arch": ["x64"] }],
+    "icon": "public/icon.ico"
+  },
+  "mac": {
+    "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }],
+    "icon": "public/icon.icns",
+    "category": "public.app-category.lifestyle"
+  },
+  "linux": {
+    "target": [{ "target": "AppImage", "arch": ["x64"] }],
+    "icon": "public/icon.png",
+    "category": "Graphics"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true
+  },
+  "publish": null
+}

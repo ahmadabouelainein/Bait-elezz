@@ -1,0 +1,174 @@
+{
+  "app": {
+    "title": "Bait-elezz",
+    "subtitle": "AI Interior Design Assistant"
+  },
+  "nav": {
+    "home": "Home",
+    "wallColors": "Wall Colors",
+    "furniturePlacement": "Furniture Placement",
+    "curtainColor": "Curtain Color",
+    "furnitureDimensions": "Furniture Dimensions",
+    "woodPlanks": "Wood Planks",
+    "upholsteryFabric": "Upholstery Fabric",
+    "carpetSelection": "Carpet Selection",
+    "runners": "Runners & Accessories",
+    "tableaux": "Tableaux & Art",
+    "settings": "Settings"
+  },
+  "common": {
+    "analyze": "Get AI Recommendation",
+    "loading": "Analyzing...",
+    "uploadImage": "Upload Room Photo",
+    "optional": "optional",
+    "recommended": "recommended",
+    "aiResponse": "AI Recommendation",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "error": "Something went wrong. Please try again.",
+    "apiKeyRequired": "Please add your Anthropic API key in Settings first.",
+    "dragOrClick": "Drag & drop or click to upload",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "settings": {
+    "title": "Settings",
+    "apiKey": "Anthropic API Key",
+    "apiKeyPlaceholder": "sk-ant-api03-...",
+    "save": "Save API Key",
+    "saved": "Saved!",
+    "getKeyAt": "Get your API key at",
+    "apiKeyHint": "Your key is stored locally and never sent anywhere except Anthropic's API.",
+    "change": "Change Key"
+  },
+  "home": {
+    "welcome": "Welcome to Bait-elezz",
+    "subtitle": "Your AI-powered interior design assistant. Choose a feature below to get started.",
+    "getStarted": "Get Started"
+  },
+  "wallColors": {
+    "description": "Find the best colors to complement your wall color.",
+    "currentColor": "Current Wall Color",
+    "roomType": "Room Type",
+    "roomTypes": {
+      "living": "Living Room",
+      "bedroom": "Bedroom",
+      "kitchen": "Kitchen",
+      "dining": "Dining Room",
+      "office": "Home Office",
+      "bathroom": "Bathroom"
+    }
+  },
+  "furniturePlacement": {
+    "description": "Get the optimal placement for each piece of furniture.",
+    "roomWidth": "Room Width (m)",
+    "roomLength": "Room Length (m)",
+    "ceilingHeight": "Ceiling Height (m)",
+    "roomType": "Room Type",
+    "furnitureList": "Furniture List",
+    "furnitureListPlaceholder": "e.g. sofa, coffee table, TV unit, armchair...",
+    "doorsWindows": "Doors & Windows Positions",
+    "doorsWindowsPlaceholder": "e.g. door on north wall, window on east wall..."
+  },
+  "curtainColor": {
+    "description": "Discover the perfect curtain color and fabric for your room.",
+    "wallColor": "Wall Color",
+    "mainFurnitureColor": "Main Furniture Color",
+    "windowSize": "Window Size",
+    "windowSizes": {
+      "small": "Small (up to 1m wide)",
+      "medium": "Medium (1–2m wide)",
+      "large": "Large (2m+ wide)",
+      "floor": "Floor to Ceiling"
+    }
+  },
+  "furnitureDimensions": {
+    "description": "Determine the ideal dimensions for each furniture piece.",
+    "roomType": "Room Type",
+    "roomWidth": "Room Width (m)",
+    "roomLength": "Room Length (m)",
+    "ceilingHeight": "Ceiling Height (m)",
+    "furniturePieces": "Select Furniture Pieces",
+    "pieces": {
+      "sofa": "Sofa",
+      "coffeeTable": "Coffee Table",
+      "tvUnit": "TV Unit",
+      "diningTable": "Dining Table",
+      "diningChairs": "Dining Chairs",
+      "bed": "Bed",
+      "wardrobe": "Wardrobe",
+      "dresser": "Dresser",
+      "desk": "Desk",
+      "bookshelf": "Bookshelf"
+    }
+  },
+  "woodPlanks": {
+    "description": "Calculate the number of wood planks needed per color.",
+    "totalArea": "Total Floor Area (m²)",
+    "colorDistribution": "Color Distribution",
+    "colorDistributionPlaceholder": "e.g. Dark walnut 60%, Light oak 40%",
+    "plankWidth": "Plank Width (cm)",
+    "plankLength": "Plank Length (cm)",
+    "woodDensity": "Wood Density (kg/m³, optional)"
+  },
+  "upholsteryFabric": {
+    "description": "Find the best upholstery fabric color and material.",
+    "furnitureType": "Furniture Type",
+    "furnitureTypes": {
+      "sofa": "Sofa",
+      "armchair": "Armchair",
+      "diningChairs": "Dining Chairs",
+      "bedHeadboard": "Bed Headboard",
+      "ottoman": "Ottoman",
+      "other": "Other"
+    },
+    "usage": "Usage Level",
+    "usageLevels": {
+      "light": "Light (guest room, low traffic)",
+      "medium": "Medium (daily use)",
+      "heavy": "Heavy (kids, pets, high traffic)"
+    },
+    "currentColor": "Current Furniture Color (optional)"
+  },
+  "carpetSelection": {
+    "description": "Choose the ideal carpet color and material.",
+    "roomType": "Room Type",
+    "area": "Room Area (m²)",
+    "occupants": "Number of Occupants",
+    "hasKidsOrPets": "Children or Pets at Home?"
+  },
+  "runners": {
+    "description": "Find the right runner and accessories for your space.",
+    "areaType": "Area Type",
+    "areaTypes": {
+      "hallway": "Hallway",
+      "entryway": "Entryway",
+      "kitchen": "Kitchen",
+      "stairs": "Stairs",
+      "bedroom": "Bedroom"
+    },
+    "length": "Area Length (m)",
+    "width": "Area Width (m)",
+    "decorStyle": "Decor Style",
+    "decorStyles": {
+      "modern": "Modern",
+      "classic": "Classic",
+      "arabic": "Arabic / Oriental",
+      "scandinavian": "Scandinavian",
+      "bohemian": "Bohemian"
+    }
+  },
+  "tableaux": {
+    "description": "Get artwork and tableau recommendations for your walls.",
+    "wallColor": "Wall Color",
+    "style": "Decor Style",
+    "wallSize": "Wall Width (m)",
+    "styles": {
+      "modern": "Modern",
+      "classic": "Classic",
+      "arabic": "Arabic / Islamic",
+      "minimalist": "Minimalist",
+      "eclectic": "Eclectic"
+    }
+  }
+}

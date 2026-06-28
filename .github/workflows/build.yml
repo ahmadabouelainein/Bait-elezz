@@ -1,0 +1,160 @@
+name: Build & Release
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Desktop Builds (Windows / macOS / Linux) ──────────────────────────────
+  desktop:
+    name: Desktop (${{ matrix.name }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: windows
+            artifact_name: bait-elezz-windows
+            artifact_glob: release/**/*.exe
+          - os: macos-latest
+            name: macos
+            artifact_name: bait-elezz-macos
+            artifact_glob: release/**/*.dmg
+          - os: ubuntu-latest
+            name: linux
+            artifact_name: bait-elezz-linux
+            artifact_glob: release/**/*.AppImage
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Electron (TypeScript)
+        run: npx tsc --project tsconfig.electron.json
+
+      - name: Build Vite (React)
+        run: npx vite build
+
+      - name: Package with electron-builder
+        run: npx electron-builder --${{ matrix.name }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_glob }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  # ── Android APK (Android 15+, API 35) ────────────────────────────────────
+  android:
+    name: Android APK (API 35)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Vite (web assets)
+        run: npx vite build
+
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli
+
+      - name: Add Android platform (if not present)
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install Android build tools and platform
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "platform-tools"
+
+      - name: Write local.properties
+        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+
+      - name: Patch build.gradle for Android 15 (minSdk 35)
+        run: |
+          sed -i 's/minSdkVersion [0-9]*/minSdkVersion 35/' android/app/build.gradle || true
+          sed -i 's/minSdk = [0-9]*/minSdk = 35/' android/app/build.gradle || true
+          sed -i 's/targetSdkVersion [0-9]*/targetSdkVersion 35/' android/app/build.gradle || true
+          sed -i 's/targetSdk = [0-9]*/targetSdk = 35/' android/app/build.gradle || true
+          sed -i 's/compileSdkVersion [0-9]*/compileSdkVersion 35/' android/app/build.gradle || true
+          sed -i 's/compileSdk = [0-9]*/compileSdk = 35/' android/app/build.gradle || true
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bait-elezz-android
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
+          retention-days: 30
+
+  # ── GitHub Release (on tag push) ─────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [desktop, android]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: List downloaded files
+        run: find artifacts -type f | sort
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
