@@ -1,0 +1,174 @@
+{
+  "app": {
+    "title": "بيت العزّ",
+    "subtitle": "مساعد التصميم الداخلي بالذكاء الاصطناعي"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "wallColors": "ألوان الحوائط",
+    "furniturePlacement": "مكان الأثاث",
+    "curtainColor": "لون الستائر",
+    "furnitureDimensions": "مقاسات الأثاث",
+    "woodPlanks": "ألواح الخشب",
+    "upholsteryFabric": "قماش التنجيد",
+    "carpetSelection": "السجاد",
+    "runners": "الرانرز والإكسسوارات",
+    "tableaux": "التابلوهات والفن",
+    "settings": "الإعدادات"
+  },
+  "common": {
+    "analyze": "احصل على توصية الذكاء الاصطناعي",
+    "loading": "جارٍ التحليل...",
+    "uploadImage": "ارفع صورة الغرفة",
+    "optional": "اختياري",
+    "recommended": "موصى به",
+    "aiResponse": "توصية الذكاء الاصطناعي",
+    "copy": "نسخ",
+    "copied": "تم النسخ!",
+    "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "apiKeyRequired": "يرجى إضافة مفتاح Anthropic API في الإعدادات أولاً.",
+    "dragOrClick": "اسحب وأفلت أو انقر للرفع",
+    "yes": "نعم",
+    "no": "لا"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "apiKey": "مفتاح Anthropic API",
+    "apiKeyPlaceholder": "sk-ant-api03-...",
+    "save": "حفظ المفتاح",
+    "saved": "تم الحفظ!",
+    "getKeyAt": "احصل على مفتاحك من",
+    "apiKeyHint": "يُحفظ مفتاحك محلياً ولا يُرسل إلا إلى API الخاصة بـ Anthropic.",
+    "change": "تغيير المفتاح"
+  },
+  "home": {
+    "welcome": "أهلاً بك في بيت العزّ",
+    "subtitle": "مساعدك الذكي للتصميم الداخلي. اختر ميزة من القائمة للبدء.",
+    "getStarted": "ابدأ الآن"
+  },
+  "wallColors": {
+    "description": "اكتشف أفضل الألوان المناسبة للون حوائطك.",
+    "currentColor": "لون الجدار الحالي",
+    "roomType": "نوع الغرفة",
+    "roomTypes": {
+      "living": "غرفة المعيشة",
+      "bedroom": "غرفة النوم",
+      "kitchen": "المطبخ",
+      "dining": "غرفة الطعام",
+      "office": "مكتب منزلي",
+      "bathroom": "الحمام"
+    }
+  },
+  "furniturePlacement": {
+    "description": "احصل على أفضل تخطيط لقطع الأثاث في غرفتك.",
+    "roomWidth": "عرض الغرفة (م)",
+    "roomLength": "طول الغرفة (م)",
+    "ceilingHeight": "ارتفاع السقف (م)",
+    "roomType": "نوع الغرفة",
+    "furnitureList": "قائمة الأثاث",
+    "furnitureListPlaceholder": "مثال: أريكة، طاولة قهوة، وحدة تلفزيون، كرسي...",
+    "doorsWindows": "مواضع الأبواب والنوافذ",
+    "doorsWindowsPlaceholder": "مثال: باب على الجدار الشمالي، نافذة على الجدار الشرقي..."
+  },
+  "curtainColor": {
+    "description": "اكتشف أنسب لون وقماش للستائر.",
+    "wallColor": "لون الجدران",
+    "mainFurnitureColor": "لون الأثاث الرئيسي",
+    "windowSize": "حجم النافذة",
+    "windowSizes": {
+      "small": "صغيرة (حتى 1م عرض)",
+      "medium": "متوسطة (1-2م عرض)",
+      "large": "كبيرة (+2م عرض)",
+      "floor": "من الأرض إلى السقف"
+    }
+  },
+  "furnitureDimensions": {
+    "description": "حدد المقاسات المثالية لكل قطعة أثاث.",
+    "roomType": "نوع الغرفة",
+    "roomWidth": "عرض الغرفة (م)",
+    "roomLength": "طول الغرفة (م)",
+    "ceilingHeight": "ارتفاع السقف (م)",
+    "furniturePieces": "اختر قطع الأثاث",
+    "pieces": {
+      "sofa": "أريكة",
+      "coffeeTable": "طاولة قهوة",
+      "tvUnit": "وحدة تلفزيون",
+      "diningTable": "طاولة طعام",
+      "diningChairs": "كراسي طعام",
+      "bed": "سرير",
+      "wardrobe": "دولاب",
+      "dresser": "كومودينو / تسريحة",
+      "desk": "مكتب",
+      "bookshelf": "رف كتب"
+    }
+  },
+  "woodPlanks": {
+    "description": "احسب عدد ألواح الخشب المطلوبة لكل لون.",
+    "totalArea": "المساحة الكلية للأرضية (م²)",
+    "colorDistribution": "توزيع الألوان",
+    "colorDistributionPlaceholder": "مثال: جوز داكن 60%، بلوط فاتح 40%",
+    "plankWidth": "عرض اللوح (سم)",
+    "plankLength": "طول اللوح (سم)",
+    "woodDensity": "كثافة الخشب (كغ/م³، اختياري)"
+  },
+  "upholsteryFabric": {
+    "description": "اختر أنسب قماش وخامة لتنجيد أثاثك.",
+    "furnitureType": "نوع الأثاث",
+    "furnitureTypes": {
+      "sofa": "أريكة",
+      "armchair": "كرسي",
+      "diningChairs": "كراسي طعام",
+      "bedHeadboard": "رأسية سرير",
+      "ottoman": "بوف / أوتمان",
+      "other": "أخرى"
+    },
+    "usage": "مستوى الاستخدام",
+    "usageLevels": {
+      "light": "خفيف (غرفة ضيوف، ازدحام منخفض)",
+      "medium": "متوسط (استخدام يومي)",
+      "heavy": "مكثف (أطفال، حيوانات، ازدحام عالٍ)"
+    },
+    "currentColor": "اللون الحالي للأثاث (اختياري)"
+  },
+  "carpetSelection": {
+    "description": "اختر لون السجادة والخامة الأنسب.",
+    "roomType": "نوع الغرفة",
+    "area": "مساحة الغرفة (م²)",
+    "occupants": "عدد السكان",
+    "hasKidsOrPets": "هل يوجد أطفال أو حيوانات أليفة؟"
+  },
+  "runners": {
+    "description": "اختر الرانر والإكسسوارات المناسبة لمساحتك.",
+    "areaType": "نوع المنطقة",
+    "areaTypes": {
+      "hallway": "ممر",
+      "entryway": "مدخل",
+      "kitchen": "مطبخ",
+      "stairs": "درج",
+      "bedroom": "غرفة نوم"
+    },
+    "length": "طول المنطقة (م)",
+    "width": "عرض المنطقة (م)",
+    "decorStyle": "أسلوب الديكور",
+    "decorStyles": {
+      "modern": "عصري",
+      "classic": "كلاسيك",
+      "arabic": "عربي / شرقي",
+      "scandinavian": "سكندنافي",
+      "bohemian": "بوهيمي"
+    }
+  },
+  "tableaux": {
+    "description": "احصل على توصيات التابلوهات والأعمال الفنية.",
+    "wallColor": "لون الجدار",
+    "style": "أسلوب الديكور",
+    "wallSize": "عرض الجدار (م)",
+    "styles": {
+      "modern": "عصري",
+      "classic": "كلاسيك",
+      "arabic": "عربي / إسلامي",
+      "minimalist": "مينيمالست",
+      "eclectic": "إيكليكتيك"
+    }
+  }
+}
